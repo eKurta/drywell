@@ -3,6 +3,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivel/models/chat.dart';
+import 'package:drivel/models/chatMessage.dart';
+import 'package:drivel/models/chatUser.dart';
+import 'package:drivel/services/userService/userService.dart';
+import 'package:flutter/material.dart';
 
 class ChatServices {
   static final _firebase = FirebaseFirestore.instance;
@@ -22,14 +26,33 @@ class ChatServices {
     return true;
   }
 
-  static Stream<Chat> exploreChats() async* {
-    //  yield _firebase.collection('Chats').snapshots();
+  static Stream updateChat(Chat chat) async* {
+    print('NESTO RADI');
+    yield _firebase.collection('Chats').doc(chat.id).snapshots();
+  }
 
-    /*
-  then((value) async* {
-      for (var element in value.docs) {
-        yield Chat.fromJson(element.data());
-      }
-    }); */
+  static createChatMessage(ChatMessage message) async {
+    try {
+      _firebase
+          .collection('Chats')
+          .doc(message.chatId)
+          .collection('Messages')
+          .doc(message.id)
+          .set(message.toMap());
+    } catch (e) {
+      print('CREATE CHAT MESSAGE ERROR $e');
+      return false;
+    }
+
+    return true;
+  }
+
+  static addChatUser(Chat chat) {
+    chat.chatMembers.add(ChatUser(
+        id: UserService.user()!.uid,
+        name: UserService.user()!.displayName!,
+        photoUrl: UserService.user()!.photoURL!));
+
+    _firebase.collection('Chats').doc(chat.id).update(chat.toMap());
   }
 }

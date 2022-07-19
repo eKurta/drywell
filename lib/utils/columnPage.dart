@@ -6,6 +6,7 @@ Widget columnPage({required List<Widget> children}) {
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
+        mainAxisSize: MainAxisSize.max,
         children: children,
       ),
     )),
