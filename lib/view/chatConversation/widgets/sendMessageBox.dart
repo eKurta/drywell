@@ -1,6 +1,8 @@
 import 'package:drivel/models/chat.dart';
 import 'package:drivel/models/chatMessage.dart';
+import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
 import 'package:drivel/services/chatServices/chatServices.dart';
+import 'package:drivel/services/userService/userService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -42,7 +44,7 @@ class SendMessageBox extends ConsumerWidget {
                     const EdgeInsets.only(right: 8, bottom: 8, top: 8, left: 8),
                 child: GestureDetector(
                   onTap: () {
-                    createMessage();
+                    createMessage(ref);
                   },
                   child: CircleAvatar(
                     radius: 22,
@@ -66,16 +68,18 @@ class SendMessageBox extends ConsumerWidget {
     );
   }
 
-  void createMessage() {
+  void createMessage(ref) {
     if (!chat.amIinChat()) {
+      ref.read(chatsProvider.notifier).addUserChat(chat);
       ChatServices.addChatUser(chat);
+      UserService.createUserChat(chat);
     }
     ChatServices.createChatMessage(ChatMessage(
         id: Uuid().v4(),
         chatId: chat.id,
         text: _chatMessageController.text,
         createdAt: DateTime.now(),
-        ownerId: chat.chatOwner().id));
+        ownerId: UserService.user()!.uid));
     _chatMessageController.clear();
   }
 }

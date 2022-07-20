@@ -1,11 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivel/models/chat.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drivel/services/userService/userService.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatNotifier extends StateNotifier<List<Chat>> {
   ChatNotifier() : super([]);
 
-  void addChat(Chat chat) {
+  void getUserChats() async {
+    List<Chat> chats = [];
+    var firebaseChats = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(UserService.user()!.uid)
+        .collection('Chats')
+        .get();
+
+    firebaseChats.docs.forEach((element) {
+      chats.add(Chat.fromJson(element.data()));
+    });
+
+    state = chats;
+  }
+
+  void addUserChat(Chat chat) {
     state = [...state, chat];
   }
 

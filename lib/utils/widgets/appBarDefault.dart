@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class AppBarDefault extends StatelessWidget {
   final String title;
   final Function()? onIconTap;
-  const AppBarDefault({Key? key, required this.title, this.onIconTap})
+  final bool hasIcon;
+  const AppBarDefault(
+      {Key? key, required this.title, this.onIconTap, this.hasIcon = true})
       : super(key: key);
 
   @override
@@ -15,13 +17,14 @@ class AppBarDefault extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          GestureDetector(
-            onTap: onIconTap ?? () => Navigator.pop(context),
-            child: Icon(
-              Icons.close,
-              size: 32,
+          if (hasIcon)
+            GestureDetector(
+              onTap: onIconTap ?? () => Navigator.pop(context),
+              child: Icon(
+                Icons.close,
+                size: 32,
+              ),
             ),
-          ),
           Expanded(
               child: Align(
                   alignment: Alignment.center,

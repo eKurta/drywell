@@ -1,20 +1,22 @@
 import 'dart:async';
 
+import 'package:drivel/services/userService/userService.dart';
 import 'package:drivel/utils/spalsh.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   SplashPage({Key? key}) : super(key: key);
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
-    Timer splashTimer = Timer(Duration(milliseconds: 1000), () {
-      SplashInitialize.initialize(context);
+    Timer splashTimer = Timer(Duration(milliseconds: 100), () {
+      SplashInitialize.initialize(context, ref);
     });
   }
 

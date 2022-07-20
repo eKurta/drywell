@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:drivel/models/chat.dart';
+import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
 import 'package:drivel/providers/chatProvider.dart/createChatProvider.dart';
 import 'package:drivel/providers/photo/singlePhotoProvider.dart';
 import 'package:drivel/services/chatServices/chatServices.dart';
+import 'package:drivel/services/userService/userService.dart';
 import 'package:drivel/utils/buttons/bigDefaultButton.dart';
 import 'package:drivel/utils/columnPage.dart';
 import 'package:drivel/utils/loading.dart';
@@ -65,8 +68,9 @@ class CreateChatPage extends ConsumerWidget {
               : null;
 
           if (createChatNotifier.canCreate()) {
-            if (await ChatServices.createChat(
-                await createChatNotifier.getCreatedChat(photo))) {
+            Chat chat = await createChatNotifier.getCreatedChat(photo);
+            if (await ChatServices.createChat(chat)) {
+              ref.read(chatsProvider.notifier).addUserChat(chat);
               navigatorPush(const ExplorePage(), context);
             }
             ;

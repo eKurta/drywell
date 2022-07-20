@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatConversationAppBar extends ConsumerWidget {
   final Chat chat;
-  const ChatConversationAppBar({required this.chat, Key? key})
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  const ChatConversationAppBar({required this.chat, Key? key, this.scaffoldKey})
       : super(key: key);
 
   @override
@@ -29,8 +30,10 @@ class ChatConversationAppBar extends ConsumerWidget {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.contact_support_outlined),
-            onPressed: () {},
+            icon: Icon(Icons.more_horiz_outlined),
+            onPressed: () {
+              scaffoldKey!.currentState!.openEndDrawer();
+            },
             splashColor: Colors.grey.shade300,
             iconSize: 32,
           ),

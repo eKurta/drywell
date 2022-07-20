@@ -1,4 +1,6 @@
+import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
 import 'package:drivel/utils/buttons/bigDefaultButton.dart';
+import 'package:drivel/utils/loading.dart';
 import 'package:drivel/utils/sizeConfig.dart';
 import 'package:drivel/utils/widgets/logo.dart';
 import 'package:drivel/utils/widgets/namedTextField.dart';
@@ -57,7 +59,7 @@ class LoginPage extends ConsumerWidget {
                   const Spacer(),
                   bigDefaultButton('Sign in', () async {
                     tryLogin(ref, context);
-                  }, context),
+                  }, context, ref.watch(loadingProvider)),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16, top: 8),
                     child: RichText(
@@ -88,11 +90,18 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  tryLogin(ref, BuildContext context) async {
-    if (!await login(
-        _userNameController.text, _passwordController.text, context)) {
-      ref.read(signinErrorProvider.notifier).state =
-          'Sign in info is incorrect';
+  tryLogin(WidgetRef ref, BuildContext context) async {
+    if (!ref.watch(loadingProvider)) {
+      ref.read(loadingProvider.notifier).state = true;
+      if (!await login(
+          _userNameController.text, _passwordController.text, context)) {
+        ref.read(signinErrorProvider.notifier).state =
+            'Sign in info is incorrect';
+        ref.read(loadingProvider.notifier).state = false;
+      } else {
+        ref.read(loadingProvider.notifier).state = true;
+        ref.read(chatsProvider.notifier).getUserChats();
+      }
     }
   }
 }

@@ -1,18 +1,16 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivel/models/chat.dart';
 import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
 import 'package:drivel/providers/chatProvider.dart/createChatProvider.dart';
 import 'package:drivel/providers/photo/singlePhotoProvider.dart';
-import 'package:drivel/services/chatServices/chatServices.dart';
+import 'package:drivel/utils/navigator.dart';
 import 'package:drivel/utils/sizeConfig.dart';
+import 'package:drivel/utils/widgets/chatDefaultIcon.dart';
+import 'package:drivel/view/chatConversation/page/chatConversationPage.dart';
 import 'package:drivel/view/createChat/createChatPage.dart';
 import 'package:drivel/view/explore/widgets/explorechatInox.dart';
 import 'package:drivel/utils/widgets/line.dart';
 import 'package:drivel/utils/widgets/userAvatarAppBar.dart';
-import 'package:drivel/view/createChat/createChatPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,7 +20,7 @@ class ExplorePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var myChats = ref.watch(chatsProvider);
-    var myChatsEdit = ref.read(chatsProvider.notifier);
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: WillPopScope(
@@ -70,17 +68,18 @@ class ExplorePage extends ConsumerWidget {
                           ),
                           ...myChats.map((chat) {
                             return Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Container(
-                                height: 64,
-                                width: 64,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: NetworkImage(chat.photoUrl!))),
-                              ),
-                            );
+                                padding: const EdgeInsets.only(left: 8),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    navigatorPush(
+                                        ChatConversationPage(chat: chat),
+                                        context);
+                                  },
+                                  child: chatIcon(
+                                      photoUrl: chat.photoUrl,
+                                      height: 64,
+                                      width: 64),
+                                ));
                           }).toList()
                         ],
                       ),

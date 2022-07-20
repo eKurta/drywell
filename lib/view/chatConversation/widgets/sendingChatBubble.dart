@@ -15,7 +15,7 @@ class SendingChatBubble extends StatelessWidget {
         child: Container(
           constraints: BoxConstraints(maxWidth: SizeConfig.width * 0.8),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8),
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8)),

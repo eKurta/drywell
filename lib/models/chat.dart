@@ -34,6 +34,10 @@ class Chat {
     return chatMembers.any((element) => element.id == UserService.user()!.uid);
   }
 
+  bool amIChatOwner() {
+    return ownerId == UserService.user()!.uid;
+  }
+
   ChatUser meInChat() {
     return chatMembers
         .firstWhere((element) => element.id == UserService.user()!.uid);
