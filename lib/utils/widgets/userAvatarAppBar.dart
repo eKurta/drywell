@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserAvatarAppBar extends ConsumerWidget {
   final String title;
-  const UserAvatarAppBar({Key? key, required this.title}) : super(key: key);
+
+  UserAvatarAppBar({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,13 +23,31 @@ class UserAvatarAppBar extends ConsumerWidget {
               child: Align(
                   alignment: Alignment.center,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 32),
+                    padding: const EdgeInsets.only(left: 32),
                     child: Text(
                       title,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
-                  )))
+                  ))),
+          IconButton(
+            onPressed: () {},
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              Icons.notifications_outlined,
+              color: Colors.white,
+            ),
+          )
         ],
       ),
     );

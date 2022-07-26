@@ -10,9 +10,9 @@ Widget logo(double size) {
             fontFamily: 'LogoFont', fontSize: size, color: Colors.amber),
       ),
       Text(
-        'wel',
+        'well',
         style: TextStyle(
-            fontFamily: 'LogoFont', fontSize: size, color: Colors.black),
+            fontFamily: 'LogoFont', fontSize: size, color: Colors.white),
       ),
     ],
   );

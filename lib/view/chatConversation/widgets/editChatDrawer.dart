@@ -5,7 +5,6 @@ import 'package:drivel/services/userService/userService.dart';
 import 'package:drivel/utils/navigator.dart';
 import 'package:drivel/utils/sizeConfig.dart';
 import 'package:drivel/utils/spacing.dart';
-import 'package:drivel/utils/widgets/appBarDefault.dart';
 import 'package:drivel/utils/widgets/chatDefaultIcon.dart';
 import 'package:drivel/view/chatConversation/page/removeChatMemberPage.dart';
 import 'package:drivel/view/explore/pages/explorePage.dart';
@@ -13,46 +12,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EditChatDrawer extends ConsumerWidget {
-  final Chat chat;
-  const EditChatDrawer({Key? key, required this.chat}) : super(key: key);
+  const EditChatDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Chat chat = ref.watch(chatsProvider.notifier).selectedChat!;
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade900,
       width: SizeConfig.width * 0.8,
       child: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
             chatIcon(photoUrl: chat.photoUrl, height: 120, width: 120),
-            verticalSpacing(8),
-            Align(
-              alignment: Alignment.center,
+            verticalSpacing(12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 chat.name,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                maxLines: 5,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: chat.name.length > 30
+                        ? 14
+                        : chat.name.length > 22
+                            ? 18
+                            : 24,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white),
               ),
             ),
             verticalSpacing(16),
             const ListTile(
-              leading: Icon(Icons.groups_sharp),
-              title: Text('Members'),
-              subtitle: Text('See all chat members'),
+              leading: Icon(Icons.groups_sharp, color: Colors.white),
+              title: Text(
+                'Members',
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: Text('See all chat members',
+                  style: TextStyle(color: Colors.white)),
             ),
             const ListTile(
-              leading: Icon(Icons.settings_outlined),
-              title: Text('Settings'),
-              subtitle: Text('Change chat settings, appearance, etc.'),
+              leading: Icon(Icons.settings_outlined, color: Colors.white),
+              title: Text('Settings', style: TextStyle(color: Colors.white)),
+              subtitle: Text('Change chat settings, appearance, etc.',
+                  style: TextStyle(color: Colors.white)),
             ),
             if (chat.amIChatOwner())
               Column(
                 children: [
                   ListTile(
-                    leading: const Icon(
-                      Icons.remove_circle_outline_outlined,
-                    ),
-                    title: Text('Remove a member'),
+                    leading: const Icon(Icons.remove_circle_outline_outlined,
+                        color: Colors.white),
+                    title: Text('Remove a member',
+                        style: TextStyle(color: Colors.white)),
                     onTap: () {
                       navigatorPush(RemoveChatMemberPage(chat: chat), context);
                     },

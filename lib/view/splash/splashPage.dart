@@ -15,14 +15,14 @@ class SplashPage extends ConsumerStatefulWidget {
 class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
-    Timer splashTimer = Timer(Duration(milliseconds: 100), () {
+    Timer splashTimer = Timer(const Duration(milliseconds: 100), () {
       SplashInitialize.initialize(context, ref);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: Center(
             // child: Image.asset(

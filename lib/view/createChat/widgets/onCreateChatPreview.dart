@@ -39,7 +39,7 @@ class ChatPreview extends ConsumerWidget {
                   height: 76,
                   width: 76,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(76),
                       image: photo != null
                           ? DecorationImage(
                               image: Image.file(File(photo.path)).image,
@@ -61,6 +61,7 @@ class ChatPreview extends ConsumerWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
+                                color: Colors.white,
                                 fontSize: createChatNotifier.name!.length > 22
                                     ? 18
                                     : 24,
@@ -72,7 +73,10 @@ class ChatPreview extends ConsumerWidget {
                           children: [
                             const Text(
                               '1',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                             horizontalSpacing(4),
                             const Icon(
@@ -88,7 +92,10 @@ class ChatPreview extends ConsumerWidget {
                             createChatNotifier.description!,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                     ],

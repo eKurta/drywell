@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:drivel/services/photoService/photoService.dart';
+import 'package:drivel/utils/loading.dart';
+import 'package:drivel/utils/navigator.dart';
+import 'package:drivel/view/explore/pages/explorePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
  */
 void onSignUp(
     String username, String email, String password, String confirmPassword,
-    [File? image]) async {
+    [File? image, BuildContext? context, WidgetRef? ref]) async {
   if (username.isNotEmpty &&
       email.isNotEmpty &&
       password.isNotEmpty &&
@@ -32,11 +36,15 @@ void onSignUp(
         await user.updateDisplayName(username);
 
         await user.sendEmailVerification();
+
+        navigatorPush(ExplorePage(), context);
+        ref!.read(loadingProvider.notifier).state = false;
       } catch (e) {
         print('SIGNUP ERROR $e');
       }
     }
   }
+  ref!.read(loadingProvider.notifier).state = false;
 }
 
 /**

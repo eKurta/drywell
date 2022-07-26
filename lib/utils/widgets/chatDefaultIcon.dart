@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 Widget chatIcon({String? photoUrl, double height = 76, double width = 76}) {
   return photoUrl != null
       ? ClipRRect(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(height),
           child: CachedNetworkImage(
               fadeInDuration: const Duration(milliseconds: 300),
               fit: BoxFit.fill,
@@ -16,7 +16,7 @@ Widget chatIcon({String? photoUrl, double height = 76, double width = 76}) {
           height: height,
           width: width,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(height),
               image: const DecorationImage(
                   fit: BoxFit.fill,
                   image: AssetImage('assets/images/defaultChatIcon.png'))),

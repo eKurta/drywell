@@ -51,6 +51,9 @@ class _NamedTextFieldState extends State<NamedTextField> {
           onChanged: widget.onChanged,
           controller: widget.controller,
           onSubmitted: widget.onSubmitted,
+          style: TextStyle(
+            color: Colors.white,
+          ),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).primaryColor),

@@ -14,12 +14,12 @@ class SendingChatBubble extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Container(
           constraints: BoxConstraints(maxWidth: SizeConfig.width * 0.8),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(8),
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8)),
-            color: Colors.amber.shade400,
+            color: Colors.amber,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivel/models/chat.dart';
 import 'package:drivel/models/chatMessage.dart';
 import 'package:drivel/models/chatUser.dart';
+import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
 import 'package:drivel/services/userService/userService.dart';
 import 'package:drivel/view/chatConversation/page/removeChatMemberPage.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,33 @@ class ChatServices {
     }
 
     return true;
+  }
+
+  static Future<Chat?> getChat(String id) async {
+    try {
+      var chat = await _firebase.collection('Chats').doc(id).get();
+
+      return Chat.fromJson(chat.data()!);
+    } catch (e) {
+      print('CREATE CHAT MESSAGE ERROR $e');
+    }
+  }
+
+  static List<ChatUser> getChatMembers(String chatId) {
+    List<ChatUser> members = [];
+    try {
+      _firebase
+          .collection('Chats')
+          .doc(chatId)
+          .get()
+          .then((value) => value.data()!['chatMembers'].forEach((member) {
+                members.add(ChatUser.fromJson(member));
+              }));
+      return members;
+    } catch (e) {
+      print('GET CHAT MEMBER ERROR $e');
+      return [];
+    }
   }
 
   static createChatMessage(ChatMessage message) async {

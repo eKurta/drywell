@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivel/models/chat.dart';
+import 'package:drivel/models/chatUser.dart';
 import 'package:drivel/services/userService/userService.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatNotifier extends StateNotifier<List<Chat>> {
   ChatNotifier() : super([]);
+
+  Chat? selectedChat;
 
   void getUserChats() async {
     List<Chat> chats = [];
@@ -19,6 +24,10 @@ class ChatNotifier extends StateNotifier<List<Chat>> {
     });
 
     state = chats;
+  }
+
+  void setSelectedChat(Chat chat) {
+    selectedChat = chat;
   }
 
   void addUserChat(Chat chat) {

@@ -50,7 +50,10 @@ class CreateChatPage extends ConsumerWidget {
         onChanged: (value) {
           createChatNotifier.toggleAllowOtherToRespond(value);
         },
-        title: const Text('Allow others to respond to this chat'),
+        title: const Text(
+          'Allow others to respond to this chat',
+          style: TextStyle(color: Colors.white),
+        ),
         controlAffinity: ListTileControlAffinity.leading,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         contentPadding: EdgeInsets.zero,
@@ -120,7 +123,7 @@ class CreateChatPage extends ConsumerWidget {
               height: 32,
               width: 32,
               decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(16)),
+                  color: Colors.amber, borderRadius: BorderRadius.circular(16)),
               child: AnimatedRotation(
                 turns: photo != null ? 0.125 : 0,
                 duration: const Duration(milliseconds: 300),

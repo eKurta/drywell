@@ -1,11 +1,20 @@
 import 'package:drivel/view/splash/splashPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.white));
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -23,9 +32,10 @@ class MyApp extends StatelessWidget {
         title: 'Drivel',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primarySwatch: Colors.amber,
-            fontFamily: 'MainFont',
-            scaffoldBackgroundColor: Colors.white),
+          primarySwatch: Colors.amber,
+          fontFamily: 'MainFont',
+          scaffoldBackgroundColor: Colors.black,
+        ),
         home: SplashPage(),
       ),
     );

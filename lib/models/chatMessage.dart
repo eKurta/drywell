@@ -6,14 +6,14 @@ class ChatMessage {
   final String chatId;
   final String text;
   final DateTime createdAt;
-  final String ownerId;
+  ChatUser owner;
 
   ChatMessage(
       {required this.id,
       required this.chatId,
       required this.text,
       required this.createdAt,
-      required this.ownerId});
+      required this.owner});
 
   factory ChatMessage.fromJson(Map<dynamic, dynamic> json) {
     return ChatMessage(
@@ -21,14 +21,14 @@ class ChatMessage {
         chatId: json['chatId'],
         text: json['message'],
         createdAt: (json['createdAt'] as Timestamp).toDate(),
-        ownerId: json['ownerId']);
+        owner: ChatUser.fromJson(json['owner']));
   }
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       'id': id,
       'chatId': chatId,
-      'ownerId': ownerId,
+      'owner': {'id': owner.id, 'name': owner.name, 'photoUrl': owner.photoUrl},
       'createdAt': createdAt,
       'message': text,
     };

@@ -23,6 +23,7 @@ class AppBarDefault extends StatelessWidget {
               child: Icon(
                 Icons.close,
                 size: 32,
+                color: Colors.white,
               ),
             ),
           Expanded(
@@ -32,8 +33,10 @@ class AppBarDefault extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 32),
                     child: Text(
                       title,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
                   )))
         ],

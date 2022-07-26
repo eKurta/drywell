@@ -10,6 +10,7 @@ class SplashInitialize {
   static void initialize(BuildContext context, ref) {
     try {
       SizeConfig(context: context);
+
       UserService.user() == null
           ? Navigator.push(
               context, MaterialPageRoute(builder: (_) => LoginPage()))

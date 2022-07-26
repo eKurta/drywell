@@ -1,7 +1,6 @@
 import 'package:drivel/models/chatUser.dart';
 import 'package:drivel/services/userService/userService.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
 
 @immutable
 class Chat {
@@ -11,9 +10,9 @@ class Chat {
   final String? description;
   final String? photoUrl;
   final bool canOthersRespond;
-  final List<ChatUser> chatMembers;
+  List<ChatUser> chatMembers;
 
-  const Chat(
+  Chat(
       {required this.id,
       required this.ownerId,
       required this.name,
