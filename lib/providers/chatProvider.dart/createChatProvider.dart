@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:drivel/models/chat.dart';
 import 'package:drivel/models/chatUser.dart';
+import 'package:drivel/providers/user/userProvider.dart';
 import 'package:drivel/services/photoService/photoService.dart';
 import 'package:drivel/services/userService/userService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -32,7 +34,7 @@ class CreateChatProvider extends ChangeNotifier {
     return name != null;
   }
 
-  Future<Chat> getCreatedChat([File? image]) async {
+  Future<Chat> getCreatedChat(WidgetRef ref, [File? image]) async {
     String? photoUrl;
     String id = Uuid().v4();
 
@@ -50,7 +52,11 @@ class CreateChatProvider extends ChangeNotifier {
         chatMembers: [
           ChatUser(
               id: UserService.user()!.uid,
-              name: UserService.user()!.displayName!)
+              name: UserService.user()!.displayName!,
+              photoUrl: UserService.user()!.photoURL)
+        ],
+        notificationSubscribers: [
+          ref.watch(userFCMProvider)
         ]);
   }
 

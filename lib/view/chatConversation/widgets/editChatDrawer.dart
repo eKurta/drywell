@@ -6,6 +6,8 @@ import 'package:drivel/utils/navigator.dart';
 import 'package:drivel/utils/sizeConfig.dart';
 import 'package:drivel/utils/spacing.dart';
 import 'package:drivel/utils/widgets/chatDefaultIcon.dart';
+import 'package:drivel/utils/widgets/line.dart';
+import 'package:drivel/view/chatConversation/page/chatMembersPage.dart';
 import 'package:drivel/view/chatConversation/page/removeChatMemberPage.dart';
 import 'package:drivel/view/explore/pages/explorePage.dart';
 import 'package:flutter/material.dart';
@@ -44,24 +46,88 @@ class EditChatDrawer extends ConsumerWidget {
               ),
             ),
             verticalSpacing(16),
-            const ListTile(
-              leading: Icon(Icons.groups_sharp, color: Colors.white),
-              title: Text(
+            sectionTitle('Chat facts'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Messages in chat',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  Text(
+                    chat.numberOfChatMessages.toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Most messages in chat',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  Text(
+                    chat.biggestChatter!,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400),
+                  )
+                ],
+              ),
+            ),
+
+            verticalSpacing(16),
+            sectionTitle('Chat info'),
+            ListTile(
+              leading: const Icon(Icons.groups_sharp, color: Colors.white),
+              title: const Text(
                 'Members',
                 style: TextStyle(color: Colors.white),
               ),
-              subtitle: Text('See all chat members',
+              subtitle: const Text('See all chat members',
                   style: TextStyle(color: Colors.white)),
+              onTap: () {
+                navigatorPush(ChatMembersPage(chat: chat), context);
+              },
             ),
-            const ListTile(
-              leading: Icon(Icons.settings_outlined, color: Colors.white),
-              title: Text('Settings', style: TextStyle(color: Colors.white)),
-              subtitle: Text('Change chat settings, appearance, etc.',
-                  style: TextStyle(color: Colors.white)),
-            ),
+
+            // const ListTile(
+            //   leading: Icon(Icons.settings_outlined, color: Colors.white),
+            //   title: Text('Settings', style: TextStyle(color: Colors.white)),
+            //   subtitle: Text('Change chat settings, appearance, etc.',
+            //       style: TextStyle(color: Colors.white)),
+            // ),
             if (chat.amIChatOwner())
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  verticalSpacing(16),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Text(
+                      'Admin command panel',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
                   ListTile(
                     leading: const Icon(Icons.remove_circle_outline_outlined,
                         color: Colors.white),
@@ -102,6 +168,21 @@ class EditChatDrawer extends ConsumerWidget {
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget sectionTitle(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: SizedBox(
+        width: double.infinity,
+        child: Text(
+          text,
+          textAlign: TextAlign.left,
+          style: TextStyle(
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
         ),
       ),
     );

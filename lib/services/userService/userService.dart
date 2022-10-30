@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivel/models/chat.dart';
 import 'package:drivel/models/chatUser.dart';
-import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
 import 'package:drivel/view/login/pages/loginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,5 +36,12 @@ class UserService {
     } catch (e) {
       print('CREATE USER CHAT ERROR $e');
     }
+  }
+
+  static updateNumberOfUserMessages(int previousNumber) {
+    _firebase
+        .collection('Users')
+        .doc(user()!.uid)
+        .set({'numberOfMessagesWritten': previousNumber + 1});
   }
 }

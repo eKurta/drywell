@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivel/models/chat.dart';
-import 'package:drivel/models/chatUser.dart';
+import 'package:drivel/services/chatServices/chatServices.dart';
 import 'package:drivel/services/userService/userService.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +26,16 @@ class ChatNotifier extends StateNotifier<List<Chat>> {
 
   void setSelectedChat(Chat chat) {
     selectedChat = chat;
+    setBiggestChatterOfSelectedChat();
+  }
+
+  void setNumberOfSelectedChatMessages(int number) {
+    selectedChat!.numberOfChatMessages = number;
+  }
+
+  void setBiggestChatterOfSelectedChat() async {
+    selectedChat!.biggestChatter =
+        await ChatServices.getUserWithMostMessagesInChat(selectedChat!.id);
   }
 
   void addUserChat(Chat chat) {

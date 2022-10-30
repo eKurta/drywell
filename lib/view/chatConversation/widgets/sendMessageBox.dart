@@ -1,11 +1,13 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:drivel/models/chat.dart';
 import 'package:drivel/models/chatMessage.dart';
 import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
+import 'package:drivel/providers/user/userMessageProvider.dart';
+import 'package:drivel/providers/user/userProvider.dart';
 import 'package:drivel/services/chatServices/chatServices.dart';
 import 'package:drivel/services/userService/userService.dart';
 import 'package:drivel/utils/sizeConfig.dart';
-import 'package:drivel/view/chatConversation/page/chatConversationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -64,7 +66,8 @@ class SendMessageBox extends ConsumerWidget {
               Spacer(),
               GestureDetector(
                 onTap: () {
-                  createMessage(ref);
+                  if (_chatMessageController.text.isNotEmpty)
+                    createMessage(ref);
                 },
                 child: CircleAvatar(
                   radius: 22,
@@ -87,11 +90,17 @@ class SendMessageBox extends ConsumerWidget {
         ));
   }
 
-  void createMessage(ref) {
+  void createMessage(WidgetRef ref) async {
     if (!chat.amIinChat()) {
       ref.read(chatsProvider.notifier).addUserChat(chat);
+
       ChatServices.addChatUser(chat);
       UserService.createUserChat(chat);
+    }
+
+    if (!chat.notificationSubscribers
+        .any((element) => element == ref.watch(userFCMProvider))) {
+      ChatServices.addUserFCM(chat, ref);
     }
 
     ChatServices.createChatMessage(ChatMessage(
@@ -100,9 +109,29 @@ class SendMessageBox extends ConsumerWidget {
         text: _chatMessageController.text.trimRight(),
         createdAt: DateTime.now(),
         owner: UserService.getUserChatUser()));
+
+    var data = <String, dynamic>{
+      "targetDevices": chat.notificationSubscribers,
+      "messageTitle": "New message in ${chat.name}",
+      "messageBody": _chatMessageController.text.trimRight()
+    };
+
     _chatMessageController.clear();
 
+    updateNumberOfUserMessages(ref);
+
     ref.read(lowerMessagePadding.notifier).state = 70.0;
+
+    var func = FirebaseFunctions.instanceFor(region: 'europe-west1')
+        .httpsCallable("notifySubscribers");
+    var res = await func.call(data);
+
+    print("message was ${res.data as bool ? "sent!" : "not sent!"}");
+  }
+
+  void updateNumberOfUserMessages(WidgetRef ref) {
+    ref.read(userMessageProvider.notifier).state += 1;
+    UserService.updateNumberOfUserMessages(ref.watch(userMessageProvider));
   }
 }
 

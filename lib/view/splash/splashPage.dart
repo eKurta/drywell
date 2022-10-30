@@ -15,7 +15,7 @@ class SplashPage extends ConsumerStatefulWidget {
 class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
-    Timer splashTimer = Timer(const Duration(milliseconds: 100), () {
+    Timer(const Duration(milliseconds: 100), () {
       SplashInitialize.initialize(context, ref);
     });
   }

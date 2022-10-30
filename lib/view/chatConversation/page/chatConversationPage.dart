@@ -48,6 +48,10 @@ class _ChatConversationPageState extends State<ChatConversationPage> {
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
+                            ref
+                                .read(chatsProvider.notifier)
+                                .setNumberOfSelectedChatMessages(
+                                    snapshot.data!.docs.length);
                             return ListView.builder(
                                 reverse: true,
                                 itemCount: snapshot.data!.docs.length,

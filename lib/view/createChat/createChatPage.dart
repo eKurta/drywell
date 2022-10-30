@@ -71,8 +71,8 @@ class CreateChatPage extends ConsumerWidget {
               : null;
 
           if (createChatNotifier.canCreate()) {
-            Chat chat = await createChatNotifier.getCreatedChat(photo);
-            if (await ChatServices.createChat(chat)) {
+            Chat chat = await createChatNotifier.getCreatedChat(ref, photo);
+            if (await ChatServices.createChat(chat, ref)) {
               ref.read(chatsProvider.notifier).addUserChat(chat);
               navigatorPush(const ExplorePage(), context);
             }

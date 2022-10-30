@@ -1,5 +1,7 @@
+import 'package:drivel/utils/navigator.dart';
 import 'package:drivel/utils/widgets/userAvatar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drivel/view/explore/stateProviders/searchStateProviders.dart';
+import 'package:drivel/view/profile/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +12,6 @@ class UserAvatarAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    User user = FirebaseAuth.instance.currentUser!;
     return SizedBox(
       height: 32,
       child: Row(
@@ -18,7 +19,11 @@ class UserAvatarAppBar extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          userAvatar(24),
+          GestureDetector(
+              onTap: () {
+                navigatorPush(ProfilePage(), context);
+              },
+              child: userAvatar(24)),
           Expanded(
               child: Align(
                   alignment: Alignment.center,
@@ -33,7 +38,15 @@ class UserAvatarAppBar extends ConsumerWidget {
                     ),
                   ))),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (ref.watch(searchStateProvider)) {
+                ref.read(searchStateProvider.notifier).state = false;
+                ref.read(searchTextStateProvider.notifier).state = '';
+              } else {
+                ref.read(searchStateProvider.notifier).state = true;
+              }
+            },
+            splashRadius: 22,
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.search,
@@ -43,6 +56,7 @@ class UserAvatarAppBar extends ConsumerWidget {
           IconButton(
             onPressed: () {},
             padding: EdgeInsets.zero,
+            splashRadius: 22,
             icon: Icon(
               Icons.notifications_outlined,
               color: Colors.white,

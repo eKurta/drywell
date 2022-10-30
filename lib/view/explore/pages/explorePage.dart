@@ -3,14 +3,16 @@ import 'package:drivel/models/chat.dart';
 import 'package:drivel/providers/chatProvider.dart/chatProvider.dart';
 import 'package:drivel/providers/chatProvider.dart/createChatProvider.dart';
 import 'package:drivel/providers/photo/singlePhotoProvider.dart';
-import 'package:drivel/services/userService/userService.dart';
 import 'package:drivel/utils/navigator.dart';
 import 'package:drivel/utils/sizeConfig.dart';
+import 'package:drivel/utils/spacing.dart';
 import 'package:drivel/utils/widgets/chatDefaultIcon.dart';
 import 'package:drivel/view/chatConversation/page/chatConversationPage.dart';
 import 'package:drivel/view/createChat/createChatPage.dart';
+import 'package:drivel/view/explore/stateProviders/searchStateProviders.dart';
 import 'package:drivel/view/explore/widgets/explorechatInox.dart';
 import 'package:drivel/utils/widgets/userAvatarAppBar.dart';
+import 'package:drivel/view/explore/widgets/searchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,9 +33,14 @@ class ExplorePage extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(children: [
+            verticalSpacing(8),
             UserAvatarAppBar(
               title: 'Explore chats',
             ),
+            if (ref.watch(searchStateProvider))
+              SearchBar(
+                padding: EdgeInsets.only(top: 16),
+              ),
             SizedBox(
                 height: 90,
                 width: SizeConfig.width,
@@ -44,14 +51,6 @@ class ExplorePage extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      IconButton(
-                          onPressed: () {
-                            UserService.logoutUser(context);
-                          },
-                          icon: Icon(
-                            Icons.logout,
-                            color: Colors.white,
-                          )),
                       GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
@@ -111,11 +110,15 @@ class ExplorePage extends ConsumerWidget {
                         itemBuilder: ((context, index) {
                           Chat chat =
                               Chat.fromJson(snapshot.data!.docs[index].data());
+                          if (chat.name
+                              .toLowerCase()
+                              .contains(ref.watch(searchTextStateProvider)))
+                            return ExploreChatInbox(
+                              chat: chat,
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                            );
 
-                          return ExploreChatInbox(
-                            chat: chat,
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                          );
+                          return SizedBox();
                         }));
                   }),
             )

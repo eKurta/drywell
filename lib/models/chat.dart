@@ -1,3 +1,4 @@
+import 'package:drivel/models/chatMessage.dart';
 import 'package:drivel/models/chatUser.dart';
 import 'package:drivel/services/userService/userService.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,9 @@ class Chat {
   final String? photoUrl;
   final bool canOthersRespond;
   List<ChatUser> chatMembers;
+  int numberOfChatMessages;
+  String? biggestChatter;
+  List<String> notificationSubscribers;
 
   Chat(
       {required this.id,
@@ -19,7 +23,10 @@ class Chat {
       this.description,
       this.photoUrl,
       this.canOthersRespond = true,
-      required this.chatMembers});
+      this.numberOfChatMessages = 0,
+      this.biggestChatter,
+      required this.chatMembers,
+      this.notificationSubscribers = const []});
 
   int chatMembersCount() {
     return chatMembers.length;
@@ -56,7 +63,9 @@ class Chat {
         description: json['description'],
         photoUrl: json['photoUrl'],
         canOthersRespond: json['canOthersRespond'],
-        chatMembers: chatMembers);
+        chatMembers: chatMembers,
+        notificationSubscribers:
+            json['notificationSubscribers'].cast<String>());
   }
 
   Map<String, dynamic> toMap() {
@@ -78,6 +87,7 @@ class Chat {
       'photoUrl': photoUrl,
       'canOthersRespond': canOthersRespond,
       'chatMembers': chatMembers,
+      'notificationSubscribers': notificationSubscribers
     };
     return map;
   }
